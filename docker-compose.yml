@@ -1,0 +1,36 @@
+version: '3.3'
+
+services:
+  vliller-elasticsearch:
+    container_name: vliller-elasticsearch
+    restart: unless-stopped
+    image: elasticsearch
+    networks:
+      - default
+    ports:
+      - 9200:9200
+    volumes:
+      # - /etc/localtime:/etc/localtime:ro
+      - ./.data:/var/lib/elasticsearch
+    environment:
+      - DOCKUID=${UID} # UID define in .env
+      - DOCKGID=${UID} # UID define in .env
+
+  vliller-kibana:
+    container_name: vliller-kibana
+    restart: unless-stopped
+    image: kibana
+    networks:
+      - default
+    ports:
+      - 5601:5601
+    depends_on:
+      - vliller-elasticsearch
+    # volumes:
+    #   - /etc/localtime:/etc/localtime:ro
+    environment:
+      - DOCKUID=${UID} # UID define in .env
+      - DOCKGID=${UID} # UID define in .env
+      - DOCKELASTICSEARCH_URL=http://elasticsearch:9200
+
+
