@@ -26,15 +26,14 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "webpack": "webpack --config webpack.config.js"
+    "webpack": "webpack --config webpack.config.js",
+
+    "miner-vlille": "node scripts/miners/vlille.js"
   },
   "dependencies": {
     "@nestjs/common": "^5.1.0",
     "@nestjs/core": "^5.1.0",
-    "dotenv": "^6.1.0",
-    "elasticsearch": "^15.1.1",
     "reflect-metadata": "^0.1.12",
-    "request": "^2.88.0",
     "rxjs": "^6.2.2",
     "typescript": "^3.0.1"
   },
