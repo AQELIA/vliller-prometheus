@@ -4,7 +4,7 @@ services:
   vliller-elasticsearch:
     container_name: vliller-elasticsearch
     restart: unless-stopped
-    image: docker.elastic.co/elasticsearch/elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.2
     networks:
       - default
     ports:
@@ -19,7 +19,7 @@ services:
   vliller-kibana:
     container_name: vliller-kibana
     restart: unless-stopped
-    image: kibana
+    image: docker.elastic.co/kibana/kibana:6.4.2
     networks:
       - default
     ports:
@@ -27,10 +27,11 @@ services:
     depends_on:
       - vliller-elasticsearch
     # volumes:
-    #   - /etc/localtime:/etc/localtime:ro
+      # - /etc/localtime:/etc/localtime:ro
+      # - ./kibana.yml:/usr/share/kibana/config/kibana.yml
     environment:
       - DOCKUID=${UID} # UID define in .env
       - DOCKGID=${UID} # UID define in .env
-      - DOCKELASTICSEARCH_URL=http://elasticsearch:9200
+      - ELASTICSEARCH_URL=http://vliller-elasticsearch:9200
 
 
