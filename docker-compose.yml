@@ -4,7 +4,7 @@ services:
   vliller-elasticsearch:
     container_name: vliller-elasticsearch
     restart: unless-stopped
-    image: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch
     networks:
       - default
     ports:
