@@ -1,5 +1,5 @@
-from elasticsearch import Elasticsearch
 import re
+from elasticsearch import Elasticsearch
 from datetime import datetime
 
 def buildVector(doc):
@@ -33,8 +33,8 @@ res = es.search(index="vlille-stations", size=10000, body={
         {
           "range": {
             "timestamp": {
-              "gte": "2019-10-01",
-              "lte": "2019-10-31",
+              "gte": "2019-09-15",
+              "lte": "2019-10-15",
             }
           }
         }
