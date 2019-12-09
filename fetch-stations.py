@@ -8,11 +8,13 @@ def buildVector(doc):
   dateExplodeWithoutYear = re.match('[0-9]{4}-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2})', data['timestamp']).groups()
   dateVector = list(map(int, dateExplodeWithoutYear))
 
+  # compute percent usage of the station
+  usage = data['bikes'] / (data['bikes'] + data['docks'])
+
   return [
     data['id'],
     1 if data['status'] == 'EN SERVICE' else 0,
-    data['bikes'],
-    data['docks'],
+    usage,
     datetime.fromisoformat(data['timestamp']).weekday(),
   ] + dateVector
 
@@ -44,7 +46,7 @@ res = es.search(index="vlille-stations", size=10000, body={
 def writeToCsv(filename, data):
   with open(filename, 'w') as fp:
     # headers
-    fp.write('id,status,bikes,docks,weekday,month,day,hours,minutes' + '\n')
+    fp.write('id,status,usage,weekday,month,day,hours,minutes' + '\n')
 
     # data
     for vector in data:
