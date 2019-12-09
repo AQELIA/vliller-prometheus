@@ -9,7 +9,8 @@ def buildVector(doc):
   dateVector = list(map(int, dateExplodeWithoutYear))
 
   # compute percent usage of the station
-  usage = round(data['bikes'] / (data['bikes'] + data['docks']), 3)
+  total = data['bikes'] + data['docks']
+  usage = round(data['bikes'] / total, 3) if total > 0 else 0 # should we remove offline stations ?
 
   return [
     data['id'],
@@ -22,10 +23,16 @@ es = Elasticsearch(["giskard.aqelia.com"])
 res = es.search(index="vlille-stations", size=10000, body={
   "query": {
     "bool": {
-      "must": [
+      "minimum_should_match" : 1,
+      "should": [
         {
           "match": {
             "id": 1
+          }
+        },
+        {
+          "match": {
+            "id": 2
           }
         },
       ],
@@ -33,8 +40,8 @@ res = es.search(index="vlille-stations", size=10000, body={
         {
           "range": {
             "timestamp": {
-              "gte": "2019-09-15",
-              "lte": "2019-10-15",
+              "gte": "2019-09-25",
+              "lte": "2019-10-10",
             }
           }
         }
@@ -60,4 +67,4 @@ print("%d documents found" % res['hits']['total'])
 globalSet = list(map(buildVector, res['hits']['hits']))
 
 # print(globalSet)
-writeToCsv('dataset/station-1_2019-10-01_to_2019-10-31.csv', globalSet)
+writeToCsv('dataset/station-1-2_2019-09-25_to_2019-10-10.csv', globalSet)

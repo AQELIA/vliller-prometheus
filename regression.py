@@ -12,13 +12,14 @@ import tensorflow_docs as tfdocs
 import tensorflow_docs.plots
 import tensorflow_docs.modeling
 
-DATASET_PATH = 'dataset/station-1_2019-09-15_to_2019-10-15.csv'
+# DATASET_PATH = 'dataset/station-1_2019-09-15_to_2019-10-15.csv'
+DATASET_PATH = 'dataset/station-1-2_2019-09-25_to_2019-10-10.csv'
 
 def load_dataset():
   dataset = pd.read_csv(DATASET_PATH).copy()
 
   # removes id column for now (only station 1)
-  dataset.pop('id')
+  # dataset.pop('id')
 
   # split set into train/test
   train_dataset = dataset.sample(frac=0.8,random_state=0)
