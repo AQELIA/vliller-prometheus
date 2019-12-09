@@ -13,7 +13,6 @@ def buildVector(doc):
   ] + dateVector
 
 es = Elasticsearch(["giskard.aqelia.com"])
-
 res = es.search(index="vlille-stations", size=10000, body={
   "query": {
     "bool": {
@@ -29,7 +28,7 @@ res = es.search(index="vlille-stations", size=10000, body={
           "range": {
             "timestamp": {
               "gte": "2019-10-01",
-              "lte": "2019-10-08",
+              "lte": "2019-10-31",
             }
           }
         }
@@ -38,8 +37,21 @@ res = es.search(index="vlille-stations", size=10000, body={
   }
 })
 
+def writeToCsv(filename, data):
+  with open(filename, 'w') as fp:
+    # headers
+    fp.write('id,status,bikes,docks,month,day,hours,minutes' + '\n')
+
+    # data
+    for vector in data:
+      fp.write(','.join(map(str, vector)) + '\n')
+
+
+# Main
+
 print("%d documents found" % res['hits']['total'])
 
 globalSet = list(map(buildVector, res['hits']['hits']))
 
-print(globalSet)
+# print(globalSet)
+writeToCsv('dataset/2019-10-01_to_2019-10-31.csv', globalSet)
