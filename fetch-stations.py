@@ -9,7 +9,7 @@ def buildVector(doc):
   dateVector = list(map(int, dateExplodeWithoutYear))
 
   # compute percent usage of the station
-  usage = data['bikes'] / (data['bikes'] + data['docks'])
+  usage = round(data['bikes'] / (data['bikes'] + data['docks']), 3)
 
   return [
     data['id'],
